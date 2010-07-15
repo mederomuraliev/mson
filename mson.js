@@ -34,36 +34,40 @@
             char = data[i];
 
             temp = findToken( char );
+            log(i)
             log( temp )
 
             if ( !token ) {
-                if ( temp !== 'whitespace' || temp !== 'object' ) {
+                if ( temp !== 'whitespace' && temp !== 'object' ) {
                     throw new SyntaxError( 'Unexpected token' );
+                } else {
+                    token = temp
                 }
-            }
+            } 
         }
+        return 'returned';
     }
 
     function findToken ( c ) {
         var type;
-        if ( !token ) {
-            for ( var prop in typesMap ) {
-                if ( typesMap.hasOwnProperty( prop ) ) {
-                    log( typesMap[prop] )
-                    if ( typesMap[prop].indexOf( c ) != -1 ) {
-                        type = prop
-                    } else {
-                        type = 'string'
-                    }
 
-                    log ( type )
+        for ( var prop in typesMap ) {
+            if ( typesMap.hasOwnProperty( prop ) ) {
+                if ( typesMap[prop].indexOf( c ) != -1 ) {
+                    type = prop
+                    return type
                 }
             }
+        }
+
+        if ( !token ) {
+            type = 'string'
             return type
         }
     }
 
     window.mson = parse;
     window.findToken = findToken;
+    window.typesMap = typesMap;
 
 })();
